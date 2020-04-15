@@ -1,24 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import tkLogo from "./assets/tinykitten.svg";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+    <div className="root">
+      <div className="container">
         <a
-          className="App-link"
-          href="https://reactjs.org"
+          className="mainButton"
+          href="https://twitter.com/intent/tweet?text=%23ナメはりますなぁ&url=https%3A%2F%2Fname.tinykitten.me%2F&source=webclient"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          ナメはりますなぁ
         </a>
-      </header>
+        <footer className="footer">
+          <a
+            href="https://github.com/TinyKitten/Tokoname"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="link"
+          >
+            ロゴ募集中
+          </a>
+          <a
+            href="https://tinykitten.me"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="link productof"
+          >
+            A product of&nbsp;
+            <img src={tkLogo} alt="TinyKitten" />
+          </a>
+          <p className="link copyright">
+            Copyright &copy; 2020&nbsp;
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://tinykitten.me"
+            >
+              TinyKitten
+            </a>
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
