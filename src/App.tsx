@@ -26,7 +26,7 @@ const App: React.FC = () => {
       .onSnapshot(snapshot => {
         setMessages(snapshot.docs.map((m) => {
           const msg = m.data() as Message;
-          msg.postedMoment = moment(msg.postedAt);
+          msg.postedMoment = moment.unix(msg.postedAt);
           return msg;
         }));
         setLoaded(true);    
