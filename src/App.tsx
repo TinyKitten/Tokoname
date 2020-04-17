@@ -42,7 +42,8 @@ const App: React.FC = () => {
 
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!text.length) {
+    if (!text || !text.match(/\S/g)
+    ) {
       return alert('メッセージを入力してください。');
     }
     if (text.length > 140) {
