@@ -26,9 +26,11 @@ const App: React.FC = () => {
       .limit(5)
       .onSnapshot(snapshot => {
         setMessages(snapshot.docs.map((m) => m.data() as Message));
-        setLoaded(true);    
+        if (!loaded) {
+          setLoaded(true);
+        }
       })
-  }, []);
+  }, [loaded]);
 
   useEffect(() => {
     firebase.auth().signInAnonymously();
