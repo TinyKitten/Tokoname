@@ -109,7 +109,7 @@ const Form: React.FC<Props> = ({
           ...styles.messageListCellStyle,
           borderBottom: i !== messages.length - 1 ? "1px solid hsla(0,0%,100%,.5)" : undefined,
         }}
-        key={msg.postedAt}
+        key={msg.id}
       >
         <time style={styles.messagePostedAt}>
           {moment.unix(msg.postedAt).format("YYYY/MM/DD HH:mm")}
