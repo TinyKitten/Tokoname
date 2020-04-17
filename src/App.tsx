@@ -37,6 +37,9 @@ const App: React.FC = () => {
 
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!text.length) {
+      return alert('メッセージを入力してください。');
+    }
     if (text.length > 140) {
       return alert('140文字以内で入力してください');
     }
