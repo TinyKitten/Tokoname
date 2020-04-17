@@ -111,7 +111,7 @@ const Form: React.FC<Props> = ({
         key={msg.postedAt}
       >
         <time style={styles.messagePostedAt}>
-          {msg.postedMoment.format("YYYY/MM/DD hh:mm")}
+          {msg.postedMoment.format("YYYY/MM/DD HH:mm")}
         </time>
         <p style={styles.messageText}>{msg.text}</p>
       </li>
