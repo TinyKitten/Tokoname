@@ -45,12 +45,13 @@ const App: React.FC = () => {
     }
     const urlPattern = /^(https|http):\/\/([a-z]{1,}\.|)(qiita\.com)(\/(.*)|\?(.*)|$)$/g;
     if (urlPattern.test(text)) {
-      return alert('URLが含むテキストは投稿できません');
+      return alert('URLを含むテキストは投稿できません');
     }
     const payload: MessageBase = {
       text,
       postedAt: moment().unix(),
     }
+    setText('');
     firebase
     .firestore()
     .collection('messages')
