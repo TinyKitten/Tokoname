@@ -44,7 +44,7 @@ const App: React.FC = () => {
     if (text.length > 140) {
       return alert('140文字以内で入力してください');
     }
-    const urlPattern = /^(https|http):\/\/([a-z]{1,}\.|)(qiita\.com)(\/(.*)|\?(.*)|$)$/g;
+    const urlPattern = new RegExp("((https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))");
     if (urlPattern.test(text)) {
       return alert('URLを含むテキストは投稿できません');
     }
