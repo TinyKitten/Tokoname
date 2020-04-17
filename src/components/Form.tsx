@@ -43,6 +43,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: 0,
     padding: 0,
     lineHeight: 1.5,
+    overflowWrap: 'break-word'
   },
   form: {
     margin: "0 auto",
