@@ -5,7 +5,7 @@ import "./App.css";
 import tkLogo from "./assets/tinykitten.svg";
 import Button from "./components/Button";
 import Form from "./components/Form";
-import { Message, MessageBase } from "./models/Message";
+import { Message } from "./models/Message";
 
 const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -25,11 +25,7 @@ const App: React.FC = () => {
       .orderBy('postedAt', 'desc')
       .limit(5)
       .onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map((m) => {
-          const msg = m.data() as Message;
-          msg.postedMoment = moment.unix(msg.postedAt);
-          return msg;
-        }));
+        setMessages(snapshot.docs.map((m) => m.data() as Message));
         setLoaded(true);    
       })
   }, []);
@@ -48,7 +44,7 @@ const App: React.FC = () => {
     if (urlPattern.test(text)) {
       return alert('URLを含むテキストは投稿できません');
     }
-    const payload: MessageBase = {
+    const payload: Message = {
       text,
       postedAt: moment().unix(),
     }

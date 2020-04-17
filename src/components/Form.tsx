@@ -1,5 +1,6 @@
 import React, { useMemo, ChangeEvent } from "react";
 import { Message } from "../models/Message";
+import moment from "moment";
 
 type Props = {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -111,7 +112,7 @@ const Form: React.FC<Props> = ({
         key={msg.postedAt}
       >
         <time style={styles.messagePostedAt}>
-          {msg.postedMoment.format("YYYY/MM/DD HH:mm")}
+          {moment.unix(msg.postedAt).format("YYYY/MM/DD HH:mm")}
         </time>
         <p style={styles.messageText}>{msg.text}</p>
       </li>
