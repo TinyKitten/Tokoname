@@ -7,18 +7,7 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.75);
   min-height: 100vh;
-}
-
-.mainButton {
-  appearance: none;
-  padding: 12px 24px;
-  border-radius: 4px;
-  background: hsla(0,0%,100%,.25);
-  backdrop-filter: blur(4px);
-  border: 1px solid #fff;
-  text-decoration: none;
-  color: #fff;
-  cursor: default;
+  flex-direction: column;
 }
 
 .footer {
@@ -47,4 +36,11 @@
 .copyright a {
   color: #fff;
   text-decoration: none;
+}
+
+.heading {
+  margin: 0;
+  color: #fff;
+  margin-top: 32px;
+  font-weight: normal;
 }
