@@ -1,19 +1,82 @@
-import React from "react";
+import React, { useEffect, useCallback, useState, ChangeEvent } from "react";
+import firebase from "firebase/app";
+import moment from 'moment';
 import "./App.css";
 import tkLogo from "./assets/tinykitten.svg";
+import Button from "./components/Button";
+import Form from "./components/Form";
+import { Message, MessageBase } from "./models/Message";
 
-function App() {
+const App: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [text, setText] = useState("");
+
+  const handlePostTwitter = () => {
+    const url =
+      "https://twitter.com/intent/tweet?text=%23ナメはりますなぁ&url=https%3A%2F%2Fname.tinykitten.me%2F&source=webclient";
+    window.open(url, "_blank");
+  };
+
+  const observeMessages = useCallback(() => {
+    firebase
+      .firestore()
+      .collection("messages")
+      .limit(5)
+      .onSnapshot(snapshot => {
+        setMessages(snapshot.docs.map((m) => {
+          const msg = m.data() as Message;
+          msg.postedMoment = moment(msg.postedAt);
+          return msg;
+        }));
+        setLoaded(true);    
+      })
+  }, []);
+
+  useEffect(() => {
+    firebase.auth().signInAnonymously();
+    observeMessages();
+  }, [observeMessages]);
+
+  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (text.length > 140) {
+      return alert('140文字以内で入力してください');
+    }
+    const urlPattern = /^(https|http):\/\/([a-z]{1,}\.|)(qiita\.com)(\/(.*)|\?(.*)|$)$/g;
+    if (urlPattern.test(text)) {
+      return alert('URLが含むテキストは投稿できません');
+    }
+    const payload: MessageBase = {
+      text,
+      postedAt: moment().unix(),
+    }
+    firebase
+    .firestore()
+    .collection('messages')
+    .add(payload)
+  }, [text]);
+
+  const handleTextChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      setText(event.currentTarget.value),
+    []
+  );
+
   return (
     <div className="root">
       <div className="container">
-        <a
-          className="mainButton"
-          href="https://twitter.com/intent/tweet?text=%23ナメはりますなぁ&url=https%3A%2F%2Fname.tinykitten.me%2F&source=webclient"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          ナメはりますなぁ
-        </a>
+        <Button onClick={handlePostTwitter}>シェアする</Button>
+        {!loaded && <h2 className="heading">Loading... </h2>}
+        {loaded && <h2 className="heading">お気持ち表明しよう </h2>}
+        {loaded && (
+          <Form
+            onTextChange={handleTextChange}
+            messages={messages}
+            onSubmit={handleSubmit}
+            textValue={text}
+          />
+        )}
         <footer className="footer">
           <a
             href="https://github.com/TinyKitten/Tokoname"
@@ -46,6 +109,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
