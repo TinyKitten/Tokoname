@@ -22,6 +22,7 @@ const App: React.FC = () => {
     firebase
       .firestore()
       .collection("messages")
+      .orderBy('postedAt', 'desc')
       .limit(5)
       .onSnapshot(snapshot => {
         setMessages(snapshot.docs.map((m) => {

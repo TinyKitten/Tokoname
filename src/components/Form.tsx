@@ -106,7 +106,7 @@ const Form: React.FC<Props> = ({
       <li
         style={{
           ...styles.messageListCellStyle,
-          borderBottom: i && i !== messages.length - 1 ? "1px solid hsla(0,0%,100%,.5)" : undefined,
+          borderBottom: i !== messages.length - 1 ? "1px solid hsla(0,0%,100%,.5)" : undefined,
         }}
         key={msg.postedAt}
       >
