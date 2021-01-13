@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, ChangeEvent } from "react";
 import firebase from "firebase/app";
-import moment from 'moment';
+import moment from "moment";
 import "./App.css";
 import tkLogo from "./assets/tinykitten.svg";
 import Button from "./components/Button";
@@ -9,7 +9,6 @@ import { Message, MessageBase } from "./models/Message";
 
 const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [text, setText] = useState("");
 
   const handlePostTwitter = () => {
@@ -22,47 +21,47 @@ const App: React.FC = () => {
     firebase
       .firestore()
       .collection("messages")
-      .orderBy('postedAt', 'desc')
+      .orderBy("postedAt", "desc")
       .limit(5)
-      .onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map((m) => ({
-          ...m.data() as Message,
-          id: m.id
-        })));
-        if (!loaded) {
-          setLoaded(true);
-        }
-      })
-  }, [loaded]);
+      .onSnapshot((snapshot) => {
+        setMessages(
+          snapshot.docs.map((m) => ({
+            ...(m.data() as Message),
+            id: m.id,
+          }))
+        );
+      });
+  }, []);
 
   useEffect(() => {
     firebase.auth().signInAnonymously();
     observeMessages();
   }, [observeMessages]);
 
-  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!text || !text.match(/\S/g)
-    ) {
-      return alert('メッセージを入力してください。');
-    }
-    if (text.length > 140) {
-      return alert('140文字以内で入力してください');
-    }
-    const urlPattern = new RegExp("((https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+))");
-    if (urlPattern.test(text)) {
-      return alert('URLを含むテキストは投稿できません');
-    }
-    const payload: MessageBase = {
-      text,
-      postedAt: moment().unix(),
-    }
-    setText('');
-    firebase
-    .firestore()
-    .collection('messages')
-    .add(payload)
-  }, [text]);
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (!text || !text.match(/\S/g)) {
+        return alert("メッセージを入力してください。");
+      }
+      if (text.length > 140) {
+        return alert("140文字以内で入力してください");
+      }
+      const urlPattern = new RegExp(
+        "((https?|ftp)(://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+))"
+      );
+      if (urlPattern.test(text)) {
+        return alert("URLを含むテキストは投稿できません");
+      }
+      const payload: MessageBase = {
+        text,
+        postedAt: moment().unix(),
+      };
+      setText("");
+      firebase.firestore().collection("messages").add(payload);
+    },
+    [text]
+  );
 
   const handleTextChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) =>
@@ -74,16 +73,13 @@ const App: React.FC = () => {
     <div className="root">
       <div className="container">
         <Button onClick={handlePostTwitter}>シェアする</Button>
-        {!loaded && <h2 className="heading">Loading... </h2>}
-        {loaded && <h2 className="heading">お気持ち表明しよう </h2>}
-        {loaded && (
-          <Form
-            onTextChange={handleTextChange}
-            messages={messages}
-            onSubmit={handleSubmit}
-            textValue={text}
-          />
-        )}
+        <h2 className="heading">お気持ち表明しよう </h2>
+        <Form
+          onTextChange={handleTextChange}
+          messages={messages}
+          onSubmit={handleSubmit}
+          textValue={text}
+        />
         <footer className="footer">
           <a
             href="https://github.com/TinyKitten/Tokoname"
