@@ -3,19 +3,12 @@ import firebase from "firebase/app";
 import moment from "moment";
 import "./App.css";
 import tkLogo from "./assets/tinykitten.svg";
-import Button from "./components/Button";
 import Form from "./components/Form";
 import { Message, MessageBase } from "./models/Message";
 
 const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
-
-  const handlePostTwitter = () => {
-    const url =
-      "https://twitter.com/intent/tweet?text=%23ナメはりますなぁ&url=https%3A%2F%2Fname.tinykitten.me%2F&source=webclient";
-    window.open(url, "_blank");
-  };
 
   useEffect(() => {
     const f = async () => {
@@ -78,7 +71,6 @@ const App: React.FC = () => {
           onSubmit={handleSubmit}
           textValue={text}
         />
-        <Button onClick={handlePostTwitter}>シェアする</Button>
         <footer className="footer">
           <a
             href="https://github.com/TinyKitten/Tokoname"
