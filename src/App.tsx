@@ -71,7 +71,6 @@ const App: React.FC = () => {
   return (
     <div className="root">
       <div className="container">
-        <Button onClick={handlePostTwitter}>シェアする</Button>
         <h2 className="heading">お気持ち表明しよう </h2>
         <Form
           onTextChange={handleTextChange}
@@ -79,6 +78,7 @@ const App: React.FC = () => {
           onSubmit={handleSubmit}
           textValue={text}
         />
+        <Button onClick={handlePostTwitter}>シェアする</Button>
         <footer className="footer">
           <a
             href="https://github.com/TinyKitten/Tokoname"
