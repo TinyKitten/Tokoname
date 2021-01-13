@@ -17,26 +17,25 @@ const App: React.FC = () => {
     window.open(url, "_blank");
   };
 
-  const observeMessages = useCallback(() => {
-    firebase
-      .firestore()
-      .collection("messages")
-      .orderBy("postedAt", "desc")
-      .limit(5)
-      .onSnapshot((snapshot) => {
-        setMessages(
-          snapshot.docs.map((m) => ({
-            ...(m.data() as Message),
-            id: m.id,
-          }))
-        );
-      });
-  }, []);
-
   useEffect(() => {
-    firebase.auth().signInAnonymously();
-    observeMessages();
-  }, [observeMessages]);
+    const f = async () => {
+      await firebase.auth().signInAnonymously();
+      firebase
+        .firestore()
+        .collection("messages")
+        .orderBy("postedAt", "desc")
+        .limit(5)
+        .onSnapshot((snapshot) => {
+          setMessages(
+            snapshot.docs.map((m) => ({
+              ...(m.data() as Message),
+              id: m.id,
+            }))
+          );
+        });
+    };
+    f();
+  }, []);
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
