@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, ChangeEvent } from "react";
 import firebase from "firebase/app";
-import moment from "moment";
+import dayjs from "dayjs";
 import "./App.css";
 import tkLogo from "./assets/tinykitten.svg";
 import Form from "./components/Form";
@@ -12,7 +12,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const f = async () => {
-      await firebase.auth().signInAnonymously();
       firebase
         .firestore()
         .collection("messages")
@@ -31,7 +30,7 @@ const App: React.FC = () => {
   }, []);
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (!text || !text.match(/\S/g)) {
         return alert("メッセージを入力してください。");
@@ -47,8 +46,11 @@ const App: React.FC = () => {
       }
       const payload: MessageBase = {
         text,
-        postedAt: moment().unix(),
+        postedAt: dayjs().unix(),
       };
+      if (!firebase.auth().currentUser) {
+        await firebase.auth().signInAnonymously();
+      }
       setText("");
       firebase.firestore().collection("messages").add(payload);
     },

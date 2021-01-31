@@ -1,6 +1,6 @@
 import React, { useMemo, ChangeEvent } from "react";
 import { Message } from "../models/Message";
-import moment from "moment";
+import dayjs from "dayjs";
 
 type Props = {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -43,7 +43,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: 0,
     padding: 0,
     lineHeight: 1.5,
-    overflowWrap: 'break-word'
+    overflowWrap: "break-word",
   },
   form: {
     margin: "0 auto",
@@ -108,12 +108,15 @@ const Form: React.FC<Props> = ({
       <li
         style={{
           ...styles.messageListCellStyle,
-          borderBottom: i !== messages.length - 1 ? "1px solid hsla(0,0%,100%,.5)" : undefined,
+          borderBottom:
+            i !== messages.length - 1
+              ? "1px solid hsla(0,0%,100%,.5)"
+              : undefined,
         }}
         key={msg.id}
       >
         <time style={styles.messagePostedAt}>
-          {moment.unix(msg.postedAt).format("YYYY/MM/DD HH:mm")}
+          {dayjs.unix(msg.postedAt).format("YYYY/MM/DD HH:mm")}
         </time>
         <p style={styles.messageText}>{msg.text}</p>
       </li>
