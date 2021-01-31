@@ -7,6 +7,7 @@ type Props = {
   messages: Message[];
   onTextChange: (event: ChangeEvent<HTMLInputElement>) => void;
   textValue: string;
+  loaded: boolean;
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
@@ -99,8 +100,12 @@ const Form: React.FC<Props> = ({
   onSubmit,
   onTextChange,
   textValue,
+  loaded,
 }) => {
   const renderMessages = useMemo(() => {
+    if (!loaded) {
+      return <h3 style={styles.noMessage}>読み込み中...</h3>;
+    }
     if (!messages.length) {
       return <h3 style={styles.noMessage}>まだお気持ち表明がありません</h3>;
     }
@@ -121,7 +126,7 @@ const Form: React.FC<Props> = ({
         <p style={styles.messageText}>{msg.text}</p>
       </li>
     ));
-  }, [messages]);
+  }, [loaded, messages]);
 
   return (
     <section style={styles.rootStyle}>

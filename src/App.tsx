@@ -9,6 +9,7 @@ import { Message, MessageBase } from "./models/Message";
 const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const f = async () => {
@@ -18,6 +19,8 @@ const App: React.FC = () => {
         .orderBy("postedAt", "desc")
         .limit(5)
         .onSnapshot((snapshot) => {
+          setLoaded(true);
+
           setMessages(
             snapshot.docs.map((m) => ({
               ...(m.data() as Message),
@@ -72,6 +75,7 @@ const App: React.FC = () => {
           messages={messages}
           onSubmit={handleSubmit}
           textValue={text}
+          loaded={loaded}
         />
         <footer className="footer">
           <a
